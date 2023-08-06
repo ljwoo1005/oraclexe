@@ -61,10 +61,6 @@ FROM employees WORKER JOIN employees MANAGER
 ON WORKER.MANAGER_ID = MANAGER.EMPLOYEE_ID;
 
 /*
-Monequijoin
-    등호 연산자 외에 다른 연산자를 포함하는 조인 조건입니다.
-*/
-
 CREATE TABLE JOB_GRADES (
 GRADE_LEVEL CHAR(1),
 LOWEST_SAL NUMBER(8,2) NOT NULL,
@@ -80,3 +76,73 @@ INSERT INTO JOB_GRADES VALUES ('C', 6000, 9999);
 INSERT INTO JOB_GRADES VALUES ('D', 10000, 14999);
 INSERT INTO JOB_GRADES VALUES ('E', 15000, 24999);
 INSERT INTO JOB_GRADES VALUES ('F', 25000, 40000);
+
+COMMIT;
+
+SELECT * FROM JOB_GRADES;
+*/
+
+/*
+Monequijoin
+    등호 연산자 외에 다른 연산자를 포함하는 조인 조건입니다.
+*/
+SELECT E.LAST_NAME, E.SALARY, J.GRADE_LEVEL
+FROM employees E JOIN job_grades J
+ON E.SALARY BETWEEN J.LOWEST_SAL AND J.HIGHEST_SAL;
+
+/*
+INNER JOIN과 OUTER JOIN
+    INNER JOIN
+        일치하지 않는 행은 출력에 표시되지 않습니다.(교집합 해당 행 출력)
+    OUTER JOIN
+        한 테이블의 행을 기반으로 다른 테이블과의 연결이 없는 행까지 포함하여 반환합니다.
+*/
+
+/*
+LEFT OUTER JOIN
+    DEPARTMENTS 테이블에 대응되는 행이 없어도
+    왼쪽 테이블인 EMPLOYEES 테이블의 모든 행을 검색합니다.
+    (INNER JOIN은 양쪽 모두 대응되는 행만을 출력한다.)
+*/
+SELECT E.LAST_NAME, E.DEPARTMENT_ID, D.DEPARTMENT_NAME
+FROM employees E
+LEFT OUTER JOIN departments D
+ON E.DEPARTMENT_ID = D.DEPARTMENT_ID;
+-- 위와 아래는 같은 내용. 위가 ANSI 표준
+SELECT E.LAST_NAME, E.DEPARTMENT_ID, D.DEPARTMENT_NAME
+FROM employees E, departments D
+WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID(+);
+
+/*
+RIGHT OUTER JOIN
+    EMPLOYEES 테이블에 대응되는 행이 없어도
+    오른쪽 테이블인 DEPARTMENTS 테이블의 모든 행을 검색합니다.
+*/
+SELECT E.LAST_NAME, D.DEPARTMENT_ID, D.DEPARTMENT_NAME
+FROM employees E
+RIGHT OUTER JOIN departments D
+ON E.DEPARTMENT_ID = D.DEPARTMENT_ID;
+
+/*
+FULL OUTER JOIN
+    DEPARTMENTS, EMPLOYEES 테이블에 대응되는 행이 없어도
+    테이블의 모든 행을 검색합니다.
+*/
+SELECT E.LAST_NAME, D.DEPARTMENT_ID, D.DEPARTMENT_NAME
+FROM employees E
+FULL OUTER JOIN departments D
+ON E.DEPARTMENT_ID = D.DEPARTMENT_ID; 
+
+/*
+Cartesian Product
+    조인 조건이 잘못되거나 완전히 생략된 경우 
+    결과가 모든 행의 조합이 표시되는 Cartesian Product로 나타냅니다.
+*/
+
+/*
+CROSS JOIN
+    두 테이블의 교차 곱을 생성합니다.
+*/
+SELECT LAST_NAME, DEPARTMENT_NAME
+FROM employees
+CROSS JOIN departments;

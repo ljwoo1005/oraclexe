@@ -34,7 +34,7 @@ SELECT CONCAT('Hello', 'World') FROM dual;
 -- SUBSTR() - 지정된 길이의 문자열을 추출합니다.
 SELECT SUBSTR('HelloWorld', 1, 5) FROM dual;
 
--- LENGTH() - 문자열의 길이를 솟자 값으로 표시합니다.
+-- LENGTH() - 문자열의 길이를 숫자 값으로 표시합니다.
 SELECT LENGTH('HelloWorld') FROM dual;
 
 -- INSTR() - 문자열에서 저장된 문자의 위치를 찾습니다.

@@ -1,0 +1,59 @@
+/*
+파일명 : ex19-DCL.sql
+
+DCL(Data Control Language)
+    DCL은 테이블에 데이터를 조작할 때 필요한 권한을 조작하는 명령어
+
+관련 키워드
+    CONNECT : 데이터베이스에 접속하는 권한을 제공합니다.
+    RESOURCE : 테이블, 시퀀스, 프로시저 등을 생성할 수 있는 권한을 부여합니다.
+    ALTER, DROP : 객체의 변경 또는 삭제 권한을 제공합니다.
+    DBA : 데이터베이스 관리자로서 시스템을 완전히 제어할 수 있는 권한을 부여합니다.
+*/
+
+ALTER SESSION SET "_ORACLE_SCRIPT"=TRUE;
+
+-- 사용자 생성하기
+CREATE USER SCOTT2 IDENTIFIED BY TIGER;
+
+-- GRANT 명령어로 접속 권한주기
+GRANT CREATE SESSION TO SCOTT2;
+GRANT CONNECT TO SCOTT2;
+
+-- GRANT 접속 권한 해제하기
+REVOKE CREATE SESSION FROM SCOTT2;
+REVOKE CONNECT FROM SCOTT2;
+
+-- OBJECT 권한주기
+GRANT CREATE SEQUENCE TO SCOTT2;
+GRANT CREATE SYNONYM TO SCOTT2;
+GRANT CREATE TABLE TO SCOTT2;
+GRANT CREATE PROCEDURE TO SCOTT2;
+GRANT CREATE VIEW TO SCOTT2;
+
+-- 모든 권한주기
+GRANT CONNECT, DBA, RESOURCE TO SCOTT2;
+
+-- 권한 해제하기
+REVOKE CONNECT, DBA, RESOURCE FROM SCOTT2;
+
+-- 사용자 비밀번호 변경
+ALTER USER SCOTT2 IDENTIFIED BY TIGER2;
+
+/*
+ROLE - 권한 그룹
+*/
+
+-- ROLE 생성방법
+CREATE ROLE ROLE01;
+
+-- ROLE 권한 할당
+GRANT CREATE SESSION, CREATE TABLE, INSERT ANY TABLE TO ROLE01;
+
+-- 사용자에게 ROLE 부여
+GRANT ROLE01 TO SCOTT2;
+REVOKE ROLE01 FROM SCOTT2;
+
+-- 사용자 삭제하기
+DROP USER SCOTT2;
+DROP USER SCOTT2 CASCADE; -- SCOTT2에 관련되어있는 모든 객체들까지 전부 삭제
